@@ -1,6 +1,5 @@
 package com.taxiassistant.activity;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,18 +8,23 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.taxiassistant.R;
+import com.taxiassistant.bottomdialog.BottomDialog;
+import com.taxiassistant.bottomdialog.EditTextDialog;
 import com.taxiassistant.service.FloatViewService;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private FloatViewService mFloatViewService;
     
@@ -56,6 +60,16 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        Button btnBottomDialog = (Button) findViewById(R.id.btn_bottomdialog);
+        btnBottomDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+
+
         try {
             Intent intent = new Intent(this, FloatViewService.class);
             startService(intent);
@@ -63,6 +77,44 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
         }
     }
+
+
+
+    private void shareDialog() {
+        //ShareBottomDialog dialog = new ShareBottomDialog();
+        //dialog.show(getSupportFragmentManager());
+        EditTextDialog dialog = new EditTextDialog();
+        dialog.show(getSupportFragmentManager());
+    }
+
+    private void showDialog() {
+        BottomDialog.create(getSupportFragmentManager())
+                .setViewListener(new BottomDialog.ViewListener() {
+                    @Override
+                    public void bindView(View v) {
+                      //  initView(v);
+                    }
+                })
+                .setLayoutRes(R.layout.dialog_layout)
+                .setDimAmount(0.9f)
+                .setTag("BottomDialog")
+                .show();
+    }
+
+    private void initView(final View view) {
+        final EditText editText = (EditText) view.findViewById(R.id.edit_text);
+        editText.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager inputMethodManager =
+                        (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+        editText.setText("Hello world");
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
