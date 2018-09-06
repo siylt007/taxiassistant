@@ -11,6 +11,8 @@ import com.taxiassistant.R;
 import com.yhao.floatwindow.PermissionListener;
 import com.yhao.floatwindow.ViewStateListener;
 
+import org.litepal.LitePal;
+
 /**
  * Created by yhao on 2017/12/18.
  * https://github.com/yhaolpz
@@ -29,6 +31,9 @@ public class BaseApplication extends Application implements View.OnClickListener
     @Override
     public void onCreate() {
         super.onCreate();
+        //这句话本来是在application里面的。
+        //该语句是用来验证litepal的，litepal本样例用来完成
+        LitePal.initialize(this);
         /*
         ImageView imageView = new ImageView(getApplicationContext());
         imageView.setImageResource(R.drawable.icon);
