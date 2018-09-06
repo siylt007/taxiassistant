@@ -1,1 +1,1 @@
-include ':taxiassistant', ':floatwindow',"dev-alert"
+include ':taxiassistant', ':floatwindow',"dev-alert","easylogger","android-common"
